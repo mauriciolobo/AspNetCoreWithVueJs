@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +31,7 @@ namespace AspNetCoreWithVueJs
 
             services.AddSpaStaticFiles(config =>
             {
-                config.RootPath = "vuejsui";
+                config.RootPath = "vuejsui/dist";
             });
         }
 
@@ -53,18 +54,17 @@ namespace AspNetCoreWithVueJs
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapToVueCliProxy(
+                    "{*path}",
+                    new SpaOptions { SourcePath = "vuejsui" },
+                    npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                    regex: "Compiled successfully",
+                    forceKill: true
+                );
             });
 
-            app.UseSpa(spa =>
-            {
-                if (env.IsDevelopment())
-                {
-                    spa.Options.SourcePath = "vuejsui";
-                    spa.UseVueCli(npmScript: "serve");
-                }
-                else
-                    spa.Options.SourcePath = "dist";
-            });
+           
         }
     }
 }

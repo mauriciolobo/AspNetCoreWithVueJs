@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <div id="nav">
+      <h1>Hello!</h1>
+      <h2>{{new Date()}}</h2>
+    <!--<div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <router-view/>-->
   </div>
 </template>
 
